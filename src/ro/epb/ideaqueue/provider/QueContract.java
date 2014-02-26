@@ -7,7 +7,7 @@ public class QueContract implements BaseColumns {
 
 	final static String CONTENT_AUTHORITY = "ro.epb.ideaqueue.provider"; //also called provider name??
 	
-	static final String IQS_TABLE_NAME = "iqs";
+	static final String TABLE_NAME = "iqs";
 	
 	public static final String COLUMN_NAME_POSITION = "position";
 	public static final String COLUMN_NAME_STRING = "string";
