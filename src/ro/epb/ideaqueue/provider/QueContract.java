@@ -17,4 +17,6 @@ public class QueContract implements BaseColumns {
 	public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 	public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_IQS).build();
 
+	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/ro.epb.ideaque";
+
 }

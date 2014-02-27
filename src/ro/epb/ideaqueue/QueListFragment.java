@@ -1,19 +1,21 @@
 package ro.epb.ideaqueue;
 
 import ro.epb.ideaqueue.provider.QueContract;
-import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
-public class QueFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class QueListFragment extends ListFragment implements LoaderCallbacks<Cursor> {
 
 	private static final String TAG = "QueFragment";
 	private SimpleCursorAdapter cursorAdapter;
@@ -33,22 +35,23 @@ public class QueFragment extends ListFragment implements LoaderManager.LoaderCal
 				);
 		setListAdapter(cursorAdapter);
 		getLoaderManager().initLoader(0, null, this);
-		loopDaLoop();
+		setHasOptionsMenu(true);
+		//loopDaLoop();
 	}
 
-	private void loopDaLoop(){
-		new Handler().postDelayed(new Runnable() {
-
-			@Override
-			public void run() {
-				ContentValues values = new ContentValues();
-				values.put(QueContract.COLUMN_NAME_POSITION, 1133);
-				values.put(QueContract.COLUMN_NAME_STRING, "mmyeha");
-				getActivity().getContentResolver().insert(QueContract.CONTENT_URI, values);
-				loopDaLoop();
-			}
-		}, 1000);
-	}
+//	private void loopDaLoop(){
+//		new Handler().postDelayed(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				ContentValues values = new ContentValues();
+//				values.put(QueContract.COLUMN_NAME_POSITION, 1133);
+//				values.put(QueContract.COLUMN_NAME_STRING, "mmyeha");
+//				getActivity().getContentResolver().insert(QueContract.CONTENT_URI, values);
+//				loopDaLoop();
+//			}
+//		}, 1000);
+//	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -69,8 +72,26 @@ public class QueFragment extends ListFragment implements LoaderManager.LoaderCal
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		// TODO Auto-generated method stub
+		cursorAdapter.swapCursor(null);
 
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.list, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.add:
+			startActivity(new Intent(Intent.ACTION_INSERT, QueContract.CONTENT_URI));
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+		
 	}
 
 

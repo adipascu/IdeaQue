@@ -48,16 +48,32 @@ public class QueProvider extends ContentProvider {
 	@Override
 	public String getType(Uri uri) {
 		Log.i(TAG, "getType");
-		return null;
+		switch (matcher.match(uri)) {
+		case IQS:
+			return QueContract.CONTENT_TYPE;
+			
+
+		default:
+			throw new IllegalArgumentException("unknown uri " + uri);
+		}
 	}
 
 	@Override
-	public Uri insert(Uri uri, ContentValues values) {
+	public Uri insert(Uri uri, final ContentValues initialValues) {
 		Log.i(TAG, "insert");
 		Uri result;//inserted uri
+		ContentValues values;
+		if(initialValues == null)
+		{
+			values = new ContentValues();
+		}
+		else
+		{
+			values = new ContentValues(initialValues);
+		}
 		switch (matcher.match(uri)) {
 		case IQS:
-			long id = db.insertOrThrow(QueContract.TABLE_NAME, null, values);
+			long id = db.insertOrThrow(QueContract.TABLE_NAME, QueContract.COLUMN_NAME_STRING, values);
 			result = Uri.parse(QueContract.CONTENT_URI + "/" + id); 		
 			break;
 		default:
