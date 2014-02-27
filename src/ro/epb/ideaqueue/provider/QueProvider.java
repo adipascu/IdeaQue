@@ -15,11 +15,13 @@ public class QueProvider extends ContentProvider {
 	private static final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
 	static final int IQS = 1;
+	static final int IQ_ITEM = 2;
 
 	private SQLiteDatabase db;
 
 	static{
 		matcher.addURI(QueContract.CONTENT_AUTHORITY, "/iqs", IQS);		
+		matcher.addURI(QueContract.CONTENT_AUTHORITY, "/iqs/#", IQ_ITEM);
 	}
 	@Override
 	public boolean onCreate() {
@@ -36,6 +38,10 @@ public class QueProvider extends ContentProvider {
 		case IQS:
 			queryBuilder.setTables(QueContract.TABLE_NAME);
 			break;
+		case IQ_ITEM:
+			queryBuilder.setTables(QueContract.TABLE_NAME);
+			queryBuilder.appendWhere(QueContract._ID + "=" + uri.getPathSegments().get(1));
+			break;
 
 		default:
 			throw new IllegalArgumentException("Unknown uri "+ uri);
@@ -51,7 +57,9 @@ public class QueProvider extends ContentProvider {
 		switch (matcher.match(uri)) {
 		case IQS:
 			return QueContract.CONTENT_TYPE;
-			
+		case IQ_ITEM:
+			return QueContract.CONTENT_ITEM_TYPE;
+
 
 		default:
 			throw new IllegalArgumentException("unknown uri " + uri);
@@ -86,15 +94,32 @@ public class QueProvider extends ContentProvider {
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+		int ret;
+		switch (matcher.match(uri)) {
+		case IQ_ITEM:
+			ret = db.delete(QueContract.TABLE_NAME, QueContract._ID + "=?", new String[]{uri.getPathSegments().get(1)});
+			break;
+		default:
+			ret = 0;
+			break;
+		}
+		if(ret!=0)
+			getContext().getContentResolver().notifyChange(uri, null);
+		return ret;
 	}
 
 	@Override
-	public int update(Uri uri, ContentValues values, String selection,
-			String[] selectionArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+		switch (matcher.match(uri)) {
+		case IQ_ITEM:
+			getContext().getContentResolver().notifyChange(uri, null);
+			return db.update(QueContract.TABLE_NAME, values, QueContract._ID + "=?", new String[]{uri.getPathSegments().get(1)});
+
+		default:
+			return 0;
+		}
+
+
 	}
 
 }
