@@ -5,8 +5,8 @@ import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
+import android.widget.Toast;
 
 public class AccountActivity extends AccountAuthenticatorActivity {
 
@@ -16,28 +16,40 @@ public class AccountActivity extends AccountAuthenticatorActivity {
 		setContentView(R.layout.activity_account);
 
 		AccountManager accountManager = AccountManager.get(this);
-		Account account = new Account("Username", "ro.epb.ideaqueue.iqaccount");
-		accountManager.addAccountExplicitly(account, "pass", null);
 
-		final Intent intent = new Intent();  
-		intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, "Username");  
-		intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, "ro.epb.ideaqueue.iqaccount");  
-		intent.putExtra(AccountManager.KEY_AUTHTOKEN, "pass");  
-		this.setAccountAuthenticatorResult(intent.getExtras());  
-		this.setResult(RESULT_OK, intent);  
-		this.finish();  
-		return;
-		//		new Handler().postDelayed(new Runnable() {
-		//			
-		//			@Override
-		//			public void run() {
-		//				final Intent intent = new Intent();
-		//				intent.putExtra(AccountManager.KEY_BOOLEAN_RESULT, true);
-		//				setAccountAuthenticatorResult(intent.getExtras());
-		//				setResult(RESULT_OK, intent);
-		//				finish();
-		//			}
-		//		}, 3000);
+		Account[] accounts = accountManager.getAccountsByType("ro.epb.ideaqueue.iqaccount");
+		if(accounts.length >= 1)
+		{
+			Toast.makeText(this, "You may have only one account!", Toast.LENGTH_LONG).show();
+			Bundle bundle = new Bundle();
+			bundle.putInt(AccountManager.KEY_ERROR_CODE, AccountManager.ERROR_CODE_UNSUPPORTED_OPERATION);
+			bundle.putString(AccountManager.KEY_ERROR_MESSAGE, "only one account is allowed");
+			setAccountAuthenticatorResult(bundle);
+			finish();
+		}
+		else
+		{
+			Account account = new Account("Username", "ro.epb.ideaqueue.iqaccount");
+			accountManager.addAccountExplicitly(account, "pass", null);
+			Bundle bundle = new Bundle();
+			bundle.putString(AccountManager.KEY_ACCOUNT_NAME, "Username");  
+			bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, "ro.epb.ideaqueue.iqaccount");  
+			bundle.putString(AccountManager.KEY_AUTHTOKEN, "pass");  
+			this.setAccountAuthenticatorResult(bundle);
+			//	this.finish();  
+			return;
+			//		new Handler().postDelayed(new Runnable() {
+			//			
+			//			@Override
+			//			public void run() {
+			//				final Intent intent = new Intent();
+			//				intent.putExtra(AccountManager.KEY_BOOLEAN_RESULT, true);
+			//				setAccountAuthenticatorResult(intent.getExtras());
+			//				setResult(RESULT_OK, intent);
+			//				finish();
+			//			}
+			//		}, 3000);
+		}
 	}
 
 	@Override
