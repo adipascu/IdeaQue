@@ -1,5 +1,8 @@
-package ro.epb.ideaqueue;
+package ro.epb.ideaqueue.auth;
 
+import ro.epb.ideaqueue.R;
+import ro.epb.ideaqueue.R.layout;
+import ro.epb.ideaqueue.R.menu;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
@@ -8,7 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Toast;
 
-public class AccountActivity extends AccountAuthenticatorActivity {
+public class AuthActivity extends AccountAuthenticatorActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

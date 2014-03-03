@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="ro.epb.ideaqueue.StubAuthService" >
+        <service android:name="ro.epb.ideaqueue.auth.AuthService" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -76,7 +76,7 @@
         </service>
 
         <activity
-            android:name="ro.epb.ideaqueue.AccountActivity"
+            android:name="ro.epb.ideaqueue.auth.AuthActivity"
             android:label="@string/title_activity_account" >
         </activity>
     </application>

@@ -1,14 +1,14 @@
-package ro.epb.ideaqueue;
+package ro.epb.ideaqueue.auth;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-public class StubAuthService extends Service {
+public class AuthService extends Service {
 
 	private final String TAG = "StubAuthService";
-	private static StubAuth stubAuth;
+	private static Auth stubAuth;
 	private static final Object lock = new Object();
 	@Override
 	public void onCreate() {
@@ -16,7 +16,7 @@ public class StubAuthService extends Service {
 		super.onCreate();
 		synchronized (lock) {
 			if(stubAuth == null)
-				stubAuth = new StubAuth(getApplicationContext());
+				stubAuth = new Auth(getApplicationContext());
 		}
 	}
 	@Override

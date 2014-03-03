@@ -1,4 +1,4 @@
-package ro.epb.ideaqueue;
+package ro.epb.ideaqueue.auth;
 
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
@@ -10,10 +10,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-public class StubAuth extends AbstractAccountAuthenticator {
+public class Auth extends AbstractAccountAuthenticator {
 	private final String TAG = "StubAuth";
 	private final Context context;
-	public StubAuth(Context context) {	
+	public Auth(Context context) {	
 		super(context);
 		this.context = context;
 		Log.i(TAG, "StubAuth");
@@ -30,7 +30,7 @@ public class StubAuth extends AbstractAccountAuthenticator {
 			String[] requiredFeatures, Bundle options)
 					throws NetworkErrorException {
 		Log.i(TAG, "addAccount");
-		final Intent intent = new Intent(context, AccountActivity.class);
+		final Intent intent = new Intent(context, AuthActivity.class);
 		intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
 		final Bundle bundle = new Bundle();
 		bundle.putParcelable(AccountManager.KEY_INTENT, intent);
