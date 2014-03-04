@@ -48,7 +48,7 @@ public class Auth extends AbstractAccountAuthenticator {
 	@Override
 	public Bundle getAuthToken(AccountAuthenticatorResponse response,
 			Account account, String authTokenType, Bundle options){
-		Log.i(TAG, "getAuthToken");
+		Log.i(TAG, "getAuthToken " + authTokenType);
 		if (!authTokenType.equals("ro.epb.ideaqueue.cookie")) {
 			final Bundle result = new Bundle();
 			result.putString(AccountManager.KEY_ERROR_MESSAGE,
