@@ -18,12 +18,16 @@ public class MainActivity extends FragmentActivity {
 
 		Account[] accounts = accountManager.getAccountsByType("ro.epb.ideaqueue.iqaccount");
 
+		
+		Bundle settingsBundle = new Bundle();
+
+		
 		Bundle params = new Bundle();
 	    params.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, false);
 	    params.putBoolean(ContentResolver.SYNC_EXTRAS_DO_NOT_RETRY, false);
 	    params.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, false);
-	    ContentResolver.addPeriodicSync(accounts[0], QueContract.CONTENT_AUTHORITY, params, 60);
-		ContentResolver.requestSync(accounts[0], QueContract.CONTENT_AUTHORITY, new Bundle());
+//	    ContentResolver.addPeriodicSync(accounts[0], QueContract.CONTENT_AUTHORITY, params, 60);
+		ContentResolver.requestSync(accounts[0], QueContract.CONTENT_AUTHORITY, params);
 	}
 
 }

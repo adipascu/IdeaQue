@@ -7,6 +7,7 @@ import ro.epb.ideaqueue.provider.QueContract;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
+import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,10 +38,14 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 		{
 			Account account = new Account("Username", "ro.epb.ideaqueue.iqaccount");
 			accountManager.addAccountExplicitly(account, "pass", null);
-			
+
 			//1133
-			ContentResolver.setIsSyncable(account, QueContract.CONTENT_AUTHORITY, 1);
 			ContentResolver.setSyncAutomatically(account, QueContract.CONTENT_AUTHORITY, true);
+			Bundle params = new Bundle();
+		    params.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, false);
+		    params.putBoolean(ContentResolver.SYNC_EXTRAS_DO_NOT_RETRY, false);
+		    params.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, false);
+			ContentResolver.addPeriodicSync(account, QueContract.CONTENT_AUTHORITY, new Bundle(), 60);
 
 			Bundle bundle = new Bundle();
 			bundle.putString(AccountManager.KEY_ACCOUNT_NAME, "Username");  
@@ -48,8 +53,8 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 			bundle.putString(AccountManager.KEY_AUTHTOKEN, "pass");  
 			setAccountAuthenticatorResult(bundle);
 			//	this.finish();
-			
-			
+
+
 			//		new Handler().postDelayed(new Runnable() {
 			//			
 			//			@Override
