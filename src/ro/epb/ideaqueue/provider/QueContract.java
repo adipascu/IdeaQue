@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 
 public class QueContract implements BaseColumns {
 
-	final static String CONTENT_AUTHORITY = "ro.epb.ideaqueue.provider"; //also called provider name??
+	public final static String CONTENT_AUTHORITY = "ro.epb.ideaqueue.provider"; //also called provider name??
 
 	static final String TABLE_NAME = "iqs";
 

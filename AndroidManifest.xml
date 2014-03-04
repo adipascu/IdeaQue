@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <!-- for ContentResolver.setSyncAutomatically -->
 
     <application
         android:allowBackup="true"
@@ -22,7 +24,9 @@
         <provider
             android:name="ro.epb.ideaqueue.provider.QueProvider"
             android:authorities="ro.epb.ideaqueue.provider"
-            android:exported="false" >
+            android:exported="false"
+            android:syncable="true"
+            android:label="VMS Data" >
         </provider>
 
         <activity
@@ -63,7 +67,7 @@
                 android:resource="@xml/authenticator" />
         </service>
         <service
-            android:name="com.example.android.datasync.SyncService"
+            android:name="ro.epb.ideaqueue.SyncService"
             android:exported="true"
             android:process=":sync" >
             <intent-filter>
